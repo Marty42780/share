@@ -7,11 +7,10 @@ RUN apk add --no-cache \
     openssh-server
 
 # Create user
-RUN adduser -D -s /bin/bash -h /home/share share
-RUN echo "share:${password}" | chpasswd
+RUN adduser -D -h /home/share share
 
 # SSH
 RUN ssh-keygen -A
 EXPOSE 22
 
-ENTRYPOINT [ "/usr/sbin/sshd", "-D" ]
+ENTRYPOINT echo "share:$PASSWORD" | chpasswd && /usr/sbin/sshd -D
